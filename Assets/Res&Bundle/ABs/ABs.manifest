@@ -1,0 +1,14 @@
+ManifestFileVersion: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: prefab/cube
+      Dependencies:
+        Dependency_0: shader/shader
+    Info_1:
+      Name: prefab/sphere
+      Dependencies:
+        Dependency_0: shader/shader
+    Info_2:
+      Name: shader/shader
+      Dependencies: {}

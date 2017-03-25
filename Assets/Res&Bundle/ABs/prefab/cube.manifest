@@ -1,0 +1,36 @@
+ManifestFileVersion: 0
+CRC: 57599607
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fa1355294a2cc963b0c515888797e250
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e72fcdd9e4c000021ac41b2be8aad9e1
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3e204f918b08341c4afddfb10fd4337c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res&Bundle/Resources/Prefab/Cube.prefab
+- Assets/Res&Bundle/Resources/mat_Cube.mat
+Dependencies:
+- Assets/Res&Bundle/ABs/shader/shader

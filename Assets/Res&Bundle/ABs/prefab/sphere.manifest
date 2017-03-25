@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 69802648
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 927d3b5a96596ca4fdd70a8c259f6e45
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e31bb66c613ffa17225cc42c82af9ad1
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res&Bundle/Resources/mat_Sphere.mat
+- Assets/Res&Bundle/Resources/Prefab/Sphere.prefab
+Dependencies:
+- Assets/Res&Bundle/ABs/shader/shader
