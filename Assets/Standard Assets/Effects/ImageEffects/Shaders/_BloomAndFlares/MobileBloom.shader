@@ -1,5 +1,5 @@
 
-Shader "Hidden/FastBlur" {
+Shader "Hidden/FastBloom" {
 	Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_Bloom ("Bloom (RGB)", 2D) = "black" {}
@@ -13,7 +13,39 @@ Shader "Hidden/FastBlur" {
 		sampler2D _Bloom;
 				
 		uniform half4 _MainTex_TexelSize;
+		
 		uniform half4 _Parameter;
+		uniform half4 _OffsetsA;
+		uniform half4 _OffsetsB;
+		
+		#define ONE_MINUS_THRESHHOLD_TIMES_INTENSITY _Parameter.w
+		#define THRESHHOLD _Parameter.z
+
+		struct v2f_simple 
+		{
+			float4 pos : SV_POSITION; 
+			half2 uv : TEXCOORD0;
+
+        #if UNITY_UV_STARTS_AT_TOP
+				half2 uv2 : TEXCOORD1;
+		#endif
+		};	
+		
+		v2f_simple vertBloom ( appdata_img v )
+		{
+			v2f_simple o;
+			
+			o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+        	o.uv = v.texcoord;		
+        	
+        #if UNITY_UV_STARTS_AT_TOP
+        	o.uv2 = v.texcoord;				
+        	if (_MainTex_TexelSize.y < 0.0)
+        		o.uv.y = 1.0 - o.uv.y;
+        #endif
+        	        	
+			return o; 
+		}
 
 		struct v2f_tap
 		{
@@ -36,6 +68,21 @@ Shader "Hidden/FastBlur" {
 
 			return o; 
 		}					
+						
+		fixed4 fragBloom ( v2f_simple i ) : SV_Target
+		{	
+        	#if UNITY_UV_STARTS_AT_TOP
+			
+			fixed4 color = tex2D(_MainTex, i.uv2);
+			return color + tex2D(_Bloom, i.uv);
+			
+			#else
+
+			fixed4 color = tex2D(_MainTex, i.uv);
+			return color + tex2D(_Bloom, i.uv);
+						
+			#endif
+		} 
 		
 		fixed4 fragDownsample ( v2f_tap i ) : SV_Target
 		{				
@@ -43,7 +90,7 @@ Shader "Hidden/FastBlur" {
 			color += tex2D (_MainTex, i.uv21);
 			color += tex2D (_MainTex, i.uv22);
 			color += tex2D (_MainTex, i.uv23);
-			return color / 4;
+			return max(color/4 - THRESHHOLD, 0) * ONE_MINUS_THRESHHOLD_TIMES_INTENSITY;
 		}
 	
 		// weight curves
@@ -163,8 +210,19 @@ Shader "Hidden/FastBlur" {
 	
 	SubShader {
 	  ZTest Off Cull Off ZWrite Off Blend Off
-
+	  
 	// 0
+	Pass {
+	
+		CGPROGRAM
+		#pragma vertex vertBloom
+		#pragma fragment fragBloom
+		
+		ENDCG
+		 
+		}
+
+	// 1
 	Pass { 
 	
 		CGPROGRAM
@@ -176,7 +234,7 @@ Shader "Hidden/FastBlur" {
 		 
 		}
 
-	// 1
+	// 2
 	Pass {
 		ZTest Always
 		Cull Off
@@ -189,7 +247,7 @@ Shader "Hidden/FastBlur" {
 		ENDCG 
 		}	
 		
-	// 2
+	// 3	
 	Pass {		
 		ZTest Always
 		Cull Off
@@ -203,7 +261,7 @@ Shader "Hidden/FastBlur" {
 		}	
 
 	// alternate blur
-	// 3
+	// 4
 	Pass {
 		ZTest Always
 		Cull Off
@@ -216,7 +274,7 @@ Shader "Hidden/FastBlur" {
 		ENDCG
 		}	
 		
-	// 4
+	// 5
 	Pass {		
 		ZTest Always
 		Cull Off
