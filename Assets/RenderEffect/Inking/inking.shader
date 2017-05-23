@@ -76,6 +76,7 @@
 
 			float4 _Color;
 
+
 			v2f vert(appdata_base v)
 			{
 				v2f o;
